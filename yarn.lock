@@ -231,7 +231,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "contentdroplet@workspace:."
   dependencies:
-    puppeteer: 24.4.0
+    puppeteerconnect.ts: "github:qtvhao/PuppeteerConnect.ts"
   languageName: unknown
   linkType: soft
 
@@ -688,6 +688,15 @@ __metadata:
   bin:
     puppeteer: lib/cjs/puppeteer/node/cli.js
   checksum: df14c1442c9167592a1a93bd2086bc7a37f74068012e4d6f128a10debbafb24cdb63d05ce921427ba60a4985f21f5161bdebfa58b234263384ebc8e7a4feb241
+  languageName: node
+  linkType: hard
+
+"puppeteerconnect.ts@github:qtvhao/PuppeteerConnect.ts":
+  version: 1.0.0
+  resolution: "puppeteerconnect.ts@https://github.com/qtvhao/PuppeteerConnect.ts.git#commit=f216f1c5b24bb3e34b5bdcfde8adb14fb3693511"
+  dependencies:
+    puppeteer: 24.4.0
+  checksum: 876e53a5f47f665efa123241223ef2dcbacdf5a9204aed8bcbd3f11da391e6f1bc385f1d3cabfe5e543758edacf8900fc4ceb07407ba01608256fba616e5a0e0
   languageName: node
   linkType: hard
 
