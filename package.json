@@ -1,0 +1,23 @@
+{
+  "name": "contentdroplet",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/qtvhao/ContentDroplet#readme",
+  "bugs": {
+    "url": "https://github.com/qtvhao/ContentDroplet/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qtvhao/ContentDroplet.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "puppeteer": "24.4.0"
+  }
+}
