@@ -1,8 +1,7 @@
-import { YouTubeUploader } from "./YouTubeUploader.js";
+import { SaveVideo } from "./SaveVideo.js";
 
-(async () => {
-    const uploader = new YouTubeUploader();
-    const uploaded = await uploader.uploadVideo();
-
-    
-})();
+const savePrivateVideo = new SaveVideo(
+    'Video link https://youtu.be/-leSh7zUV1E Filename',
+    'Private'
+);
+savePrivateVideo.run();
