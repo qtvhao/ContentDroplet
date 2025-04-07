@@ -21,6 +21,7 @@ export class SaveVideo {
         await page.goto(url + `/videos/upload?d=ud&udvid=${vid}`);
         await ClickButton.clickButtonMultipleTimes(page, '#next-button.ytcp-uploads-dialog', 3)
         await ClickLabel.clickElementByText(page, '#radioLabel', this.privacySetting);
+        await ClickButton.clickButtonMultipleTimes(page, '#done-button.ytcp-uploads-dialog')
 
         return vid;
     }

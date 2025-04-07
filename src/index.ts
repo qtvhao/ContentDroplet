@@ -1,11 +1,13 @@
+import { EditVideoDetails } from "./EditVideoDetails.js";
 import { SaveVideo } from "./SaveVideo.js";
 
-const savePrivateVideo = new SaveVideo(
-    'Video link https://youtu.be/-leSh7zUV1E Filename',
-    'Private'
-);
 (async () => {
-    const vid = await savePrivateVideo.run();
+    const vid = '-leSh7zUV1E'
 
     console.log({vid})
+
+    const editor = new EditVideoDetails(vid)
+
+    await editor.makeChanges()
+
 })();
