@@ -693,10 +693,10 @@ __metadata:
 
 "puppeteerconnect.ts@github:qtvhao/PuppeteerConnect.ts":
   version: 1.0.0
-  resolution: "puppeteerconnect.ts@https://github.com/qtvhao/PuppeteerConnect.ts.git#commit=9c4e19a3b875edc155d9d6ea2934ba6b2f126d7c"
+  resolution: "puppeteerconnect.ts@https://github.com/qtvhao/PuppeteerConnect.ts.git#commit=6b6595656bc2d23fc670b62beaf488dc6f430ed9"
   dependencies:
     puppeteer: 24.4.0
-  checksum: 0df53ad3bc1be8a2dd7fe788cce658197ce775d5b62fa7f654f8a58ec9f9ca33a59c1de862499d53e5b86232ef0cc224c9a4e04f0327977f8ae9496db06cda7e
+  checksum: f8a199238690ee81d21cf57b5c499b4426f001543c2074628853d4297fc8af6d85a7daecde9a8bb244d57546278a5a86a1fad0ca3ee22bdfd7b9e82c0c13c7fe
   languageName: node
   linkType: hard
 
