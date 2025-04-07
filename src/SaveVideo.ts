@@ -19,9 +19,10 @@ export class SaveVideo {
         const page: Page = await connect.getFirstPage();
         const url = page.url();
         await page.goto(url + `/videos/upload?d=ud&udvid=${vid}`);
-        ClickButton.clickButtonMultipleTimes(page, '#next-button.ytcp-uploads-dialog', 3)
+        await ClickButton.clickButtonMultipleTimes(page, '#next-button.ytcp-uploads-dialog', 3)
+        await ClickLabel.clickElementByText(page, '#radioLabel', this.privacySetting);
 
-        ClickLabel.clickElementByText(page, '#radioLabel', this.privacySetting)
+        return vid;
     }
 
     private extractYouTubeId(text: string): string | null {
