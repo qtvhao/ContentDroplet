@@ -1,4 +1,5 @@
 import { Page } from "puppeteer";
+import { GetPageBodyText } from 'puppeteerconnect.ts/dist/Utils/GetPageBodyText.js'
 import { PuppeteerConnect } from "puppeteerconnect.ts";
 
 export class EditVideoDetails {
@@ -77,5 +78,12 @@ export class EditVideoDetails {
         } else {
             console.warn('Save button not found');
         }
+    }
+    async checkVideoAlreadyHaveTitle(title: string) {
+        const page = await this.connect.getFirstPage();
+        await page.goto(`https://youtu.be/${this.vid}?t=36`)
+        await page.waitForSelector('body');
+        const innerText = await GetPageBodyText.getInnerText(page);
+        return innerText.includes(title);
     }
 }
