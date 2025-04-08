@@ -72,6 +72,8 @@ export class EditVideoDetails {
         }
         if (saveButton) {
             await saveButton.click();
+            await this.connect.disconnectBrowser(page.browser())
+            await PuppeteerConnect.killAllChromeProcesses()
         } else {
             console.warn('Save button not found');
         }

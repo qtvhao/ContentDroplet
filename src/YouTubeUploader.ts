@@ -12,7 +12,7 @@ export class YouTubeUploader {
     }
 
     async uploadVideo(videoFilePath: string) {
-        await this.connect.connectLocalBrowser();
+        const browser = await this.connect.connectLocalBrowser();
         await this.connect.waitForPageLogin('https://studio.youtube.com/', 'studio.youtube.com');
         const page: Page = await this.connect.getFirstPage();
         const url = page.url();
@@ -26,9 +26,13 @@ export class YouTubeUploader {
         const found = await FindElement.waitForElementContainingText(page, 'https://youtu.be/');
 
         let text = await page.evaluate(element => element.textContent, found);
-        if (text) {
+        if (text === null) {
+            throw new Error("Failed to extract video URL text content from the element.");
+        } else {
             text = text.replace(/\s+/g, ' ');
             console.log(text);
+            await this.connect.disconnectBrowser(browser)
+            await PuppeteerConnect.killAllChromeProcesses()
 
             return text
         }
