@@ -11,13 +11,13 @@ export class YouTubeUploader {
         this.connect = new PuppeteerConnect();
     }
 
-    async uploadVideo() {
+    async uploadVideo(videoFilePath: string) {
         await this.connect.connectLocalBrowser();
         await this.connect.waitForPageLogin('https://studio.youtube.com/', 'studio.youtube.com');
         const page: Page = await this.connect.getFirstPage();
         const url = page.url();
 
-        const uploaded = UploadFile.uploadFile(page, url + '/videos/upload?d=ud', 'input[name="Filedata"]', 'task-b60f9d6f-9085-48a6-bcdf-f1a12b0a82b1.mp4');
+        const uploaded = UploadFile.uploadFile(page, url + '/videos/upload?d=ud', 'input[name="Filedata"]', videoFilePath);
 
         console.log(uploaded);
 
