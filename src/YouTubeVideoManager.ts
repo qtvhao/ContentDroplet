@@ -11,6 +11,11 @@ export class YouTubeVideoManager {
         this.title = title;
     }
 
+    private async updateVideoTitleAndSave(editor: EditVideoDetails): Promise<void> {
+        await editor.makeChanges(this.title, '');
+        await editor.clickButtonSave(await editor.connect.getFirstPage());
+    }
+
     async run(): Promise<void> {
         const uploader = new YouTubeUploader();
         const uploaded: any = await uploader.uploadVideo(this.outputPath);
@@ -29,12 +34,18 @@ export class YouTubeVideoManager {
         let alreadyHaveTitle: boolean = await editor.checkVideoAlreadyHaveTitle(this.title);
         console.log({ alreadyHaveTitle });
 
-        await editor.makeChanges(this.title, '');
-        await editor.clickButtonSave(await editor.connect.getFirstPage());
-        await editor.connect.connectLocalBrowser();
-        alreadyHaveTitle = await editor.checkVideoAlreadyHaveTitle(this.title);
-        console.log({ alreadyHaveTitle, title: this.title });
-        if (alreadyHaveTitle ) {
+        let retries = 5;
+        while (retries-- > 0) {
+            await this.updateVideoTitleAndSave(editor);
+            await editor.connect.connectLocalBrowser();
+            alreadyHaveTitle = await editor.checkVideoAlreadyHaveTitle(this.title);
+            console.log({ alreadyHaveTitle, title: this.title });
+            if (alreadyHaveTitle) {
+                break;
+            }
+        }
+
+        if (alreadyHaveTitle) {
             await editor.makePublic();
         }
     }
