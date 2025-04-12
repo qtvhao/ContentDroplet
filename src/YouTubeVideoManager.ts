@@ -34,5 +34,8 @@ export class YouTubeVideoManager {
         await editor.connect.connectLocalBrowser();
         alreadyHaveTitle = await editor.checkVideoAlreadyHaveTitle(this.title);
         console.log({ alreadyHaveTitle, title: this.title });
+        if (alreadyHaveTitle ) {
+            await editor.makePublic();
+        }
     }
 }
