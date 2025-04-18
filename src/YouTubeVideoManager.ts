@@ -25,6 +25,7 @@ export class YouTubeVideoManager {
         const editor = await this.prepareEditor(video);
         await this.tryUpdateTitle(editor);
         await this.finalizePublishing(editor);
+        console.log('🎉 Video processing and publishing succeeded! 🚀');
     }
 
     private async uploadVideo(): Promise<any> {
@@ -64,6 +65,9 @@ export class YouTubeVideoManager {
             if (alreadyHaveTitle) {
                 break;
             }
+        }
+        if (!alreadyHaveTitle) {
+            throw new Error('Failed to update video title after multiple attempts.');
         }
     }
 
