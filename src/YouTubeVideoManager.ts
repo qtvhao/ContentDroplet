@@ -25,7 +25,6 @@ export class YouTubeVideoManager {
         const editor = await this.prepareEditor(video);
         await this.tryUpdateTitle(editor);
         await this.finalizePublishing(editor);
-        console.log('🎉 Video processing and publishing succeeded! 🚀');
     }
 
     private async uploadVideo(): Promise<any> {
@@ -46,27 +45,27 @@ export class YouTubeVideoManager {
         return vid;
     }
 
-    private async prepareEditor(video: any): Promise<EditVideoDetails> {
+    async prepareEditor(video: any): Promise<EditVideoDetails> {
         const editor = new EditVideoDetails(video);
         await editor.connect.connectLocalBrowser();
         return editor;
     }
 
-    private async tryUpdateTitle(editor: EditVideoDetails): Promise<void> {
+    async tryUpdateTitle(editor: EditVideoDetails): Promise<void> {
         let alreadyHaveTitle = await editor.checkVideoAlreadyHaveTitle(this.title);
         console.log('🔍 Checking if video already has the correct title:', { alreadyHaveTitle });
 
         let retries = 5;
         while (retries-- > 0) {
+            alreadyHaveTitle = await editor.checkVideoAlreadyHaveTitle(this.title);
+            console.log('✅ Pre-retry title check:', { alreadyHaveTitle, title: this.title });
+            if (alreadyHaveTitle) {
+                break;
+            }
             await this.updateVideoTitleAndSave(editor);
             console.log('🔁 Retrying title update. Remaining attempts:', retries, 'Expected title:', this.title);
             await editor.connect.connectLocalBrowser();
             console.log('🌐 Reconnected browser after failed title update.');
-            alreadyHaveTitle = await editor.checkVideoAlreadyHaveTitle(this.title);
-            console.log('✅ Post-retry title check:', { alreadyHaveTitle, title: this.title });
-            if (alreadyHaveTitle) {
-                break;
-            }
         }
         if (!alreadyHaveTitle) {
             console.error('Final failure to update video title. Title attempted:', this.title);
@@ -74,10 +73,11 @@ export class YouTubeVideoManager {
         }
     }
 
-    private async finalizePublishing(editor: EditVideoDetails): Promise<void> {
+    async finalizePublishing(editor: EditVideoDetails): Promise<void> {
         const hasTitle = await editor.checkVideoAlreadyHaveTitle(this.title);
         if (hasTitle) {
             await editor.makePublic();
         }
+        console.log('🎉 Video processing and publishing succeeded! 🚀');
     }
 }
