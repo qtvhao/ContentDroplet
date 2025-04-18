@@ -20,21 +20,39 @@ export class YouTubeVideoManager {
     }
 
     async run(): Promise<void> {
+        const uploaded = await this.uploadVideo();
+        const video = await this.saveVideo(uploaded);
+        const editor = await this.prepareEditor(video);
+        await this.tryUpdateTitle(editor);
+        await this.finalizePublishing(editor);
+    }
+
+    private async uploadVideo(): Promise<any> {
         const uploader = new YouTubeUploader();
-        const uploaded: any = await uploader.uploadVideo(this.outputPath);
+        const uploaded = await uploader.uploadVideo(this.outputPath);
         if (typeof uploaded === 'undefined') {
             throw new Error('Video upload failed: no response returned from YouTubeUploader.');
         }
+        return uploaded;
+    }
 
+    private async saveVideo(uploaded: any): Promise<any> {
         const saveVideo = new SaveVideo(uploaded, 'Private');
-        const vid: any = await saveVideo.run();
+        const vid = await saveVideo.run();
         if (typeof vid === 'undefined' || vid === null) {
             throw new Error('SaveVideo failed: received null or undefined video object.');
         }
+        return vid;
+    }
 
-        const editor = new EditVideoDetails(vid);
+    private async prepareEditor(video: any): Promise<EditVideoDetails> {
+        const editor = new EditVideoDetails(video);
         await editor.connect.connectLocalBrowser();
-        let alreadyHaveTitle: boolean = await editor.checkVideoAlreadyHaveTitle(this.title);
+        return editor;
+    }
+
+    private async tryUpdateTitle(editor: EditVideoDetails): Promise<void> {
+        let alreadyHaveTitle = await editor.checkVideoAlreadyHaveTitle(this.title);
         console.log({ alreadyHaveTitle });
 
         let retries = 5;
@@ -47,8 +65,11 @@ export class YouTubeVideoManager {
                 break;
             }
         }
+    }
 
-        if (alreadyHaveTitle) {
+    private async finalizePublishing(editor: EditVideoDetails): Promise<void> {
+        const hasTitle = await editor.checkVideoAlreadyHaveTitle(this.title);
+        if (hasTitle) {
             await editor.makePublic();
         }
     }
