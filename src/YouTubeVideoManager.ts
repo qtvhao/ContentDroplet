@@ -8,6 +8,9 @@ export class YouTubeVideoManager {
 
     constructor(outputPath: string, title: string) {
         this.outputPath = outputPath;
+        if (title.length > 100) {
+            throw new Error('Title must be less than 100 characters.');
+        }
         this.title = title;
     }
 
