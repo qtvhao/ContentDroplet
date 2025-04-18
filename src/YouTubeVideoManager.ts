@@ -52,11 +52,11 @@ export class YouTubeVideoManager {
     }
 
     async tryUpdateTitle(editor: EditVideoDetails): Promise<void> {
-        let alreadyHaveTitle = await editor.checkVideoAlreadyHaveTitle(this.title);
-        console.log('🔍 Checking if video already has the correct title:', { alreadyHaveTitle });
+        let alreadyHaveTitle
 
         let retries = 5;
         while (retries-- > 0) {
+            console.log('🔍 Checking if video already has the correct title:', { alreadyHaveTitle });
             alreadyHaveTitle = await editor.checkVideoAlreadyHaveTitle(this.title);
             console.log('✅ Pre-retry title check:', { alreadyHaveTitle, title: this.title });
             if (alreadyHaveTitle) {
@@ -74,10 +74,7 @@ export class YouTubeVideoManager {
     }
 
     async finalizePublishing(editor: EditVideoDetails): Promise<void> {
-        const hasTitle = await editor.checkVideoAlreadyHaveTitle(this.title);
-        if (hasTitle) {
-            await editor.makePublic();
-        }
+        await editor.makePublic();
         console.log('🎉 Video processing and publishing succeeded! 🚀');
     }
 }
