@@ -54,19 +54,22 @@ export class YouTubeVideoManager {
 
     private async tryUpdateTitle(editor: EditVideoDetails): Promise<void> {
         let alreadyHaveTitle = await editor.checkVideoAlreadyHaveTitle(this.title);
-        console.log({ alreadyHaveTitle });
+        console.log('🔍 Checking if video already has the correct title:', { alreadyHaveTitle });
 
         let retries = 5;
         while (retries-- > 0) {
             await this.updateVideoTitleAndSave(editor);
+            console.log('🔁 Retrying title update. Remaining attempts:', retries, 'Expected title:', this.title);
             await editor.connect.connectLocalBrowser();
+            console.log('🌐 Reconnected browser after failed title update.');
             alreadyHaveTitle = await editor.checkVideoAlreadyHaveTitle(this.title);
-            console.log({ alreadyHaveTitle, title: this.title });
+            console.log('✅ Post-retry title check:', { alreadyHaveTitle, title: this.title });
             if (alreadyHaveTitle) {
                 break;
             }
         }
         if (!alreadyHaveTitle) {
+            console.error('Final failure to update video title. Title attempted:', this.title);
             throw new Error('Failed to update video title after multiple attempts.');
         }
     }
