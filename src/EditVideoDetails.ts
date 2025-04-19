@@ -24,38 +24,58 @@ export class EditVideoDetails {
         await this.typeOnFocused(page, commonSelector, 'Description', description);
     }
 
-    async typeOnFocused(page: Page, selector: string, matcher: string, text: string) {
+    async typeOnFocused(page: Page, selector: string, matcher: string, text: string, attempts: number = 5): Promise<void> {
+        console.log('')
+        while(true) {
+            await new Promise(r => setTimeout(r, 200))
+            let innerText = await GetPageBodyText.getInnerText(page)
+            if (innerText.includes(matcher)) {
+                break;
+            }
+        }
         for (let i = 0; i < 200; i++) {
             await page.keyboard.press('Tab');
             let $el = await page.$(selector);
+            await new Promise(r => setTimeout(r, 100));
             if ($el) {
                 console.log('Focused:', $el);
-                let borderColor = await page.evaluate(el => {
-                    return getComputedStyle(el).borderColor;
-                }, $el);
-                let innerText = await page.evaluate(el => {
-                    return (el as HTMLElement).innerText;
-                }, $el);
-                let inputsText = await page.evaluate(el => {
-                    let inputs = Array.from(el.querySelectorAll('input'));
-                    return inputs.map(input => input.placeholder);
-                }, $el);
-                innerText += " " + inputsText.join(' ');
-                if (innerText.includes(matcher)) {
+                let { borderColor, innerText, matched } = await page.evaluate((el, matcher) => {
+                    // const el = $0
+                    // const matcher = 'Title (required)';
+                    const computedStyle = getComputedStyle(el);
+                    const borderColor = computedStyle.borderColor;
+                    let innerText = (el as HTMLElement).innerText;
+                    const inputsText = Array.from(el.querySelectorAll('input')).map(input => input.placeholder);
+                    innerText += " " + inputsText.join(' ');
+                    const matched = innerText.includes(matcher);
+                    console.log(innerText, matched)
+
+                    return { borderColor, innerText, matched };
+                }, $el, matcher);
+
+                if (matched) {
                     console.log('Typing:', text);
                     for (let i = 0; i < 5200; i++) {
                         await page.keyboard.press('ArrowRight');
                         await page.keyboard.press('Backspace');
                     }
                     await page.keyboard.type(text);
-                    break;
+                    return;
                 } else {
                     console.log('Inner text:', innerText);
                     console.log('Border color:', borderColor);
                 }
             }
         }
-        throw new Error(`Failed to find input field matching: ${matcher}`);
+        let msg = `Failed to find input field matching: ${matcher}`
+        console.log(msg)
+        await new Promise(r => setTimeout(r, 20e3))
+        if (attempts > 0) {
+            await page.bringToFront();
+            return await this.typeOnFocused(page, selector, matcher, text, attempts - 1)
+        }
+        await new Promise(r => setTimeout(r, 10 * 60e3))
+        throw new Error(msg);
     }
 
     async clickButtonSave(page: Page, immediately_break = false) {
@@ -90,20 +110,14 @@ export class EditVideoDetails {
         await page.waitForSelector('body');
 
         const startTime = Date.now();
-        const timeout = 15000;
+        const timeout = 15_000;
 
         while (Date.now() - startTime < timeout) {
             const innerText = await GetPageBodyText.getInnerText(page);
-            if (innerText.includes(title)) {
+            if (innerText.length > 0 && innerText.includes(title)) {
                 return true;
             }
             await new Promise(r => setTimeout(r, 500));
-        }
-
-        const innerText = await GetPageBodyText.getInnerText(page);
-        if (!innerText.includes(title)) {
-            console.log('=+=')
-            console.log(innerText, title)
         }
 
         return false;

@@ -693,10 +693,10 @@ __metadata:
 
 "puppeteerconnect.ts@github:qtvhao/PuppeteerConnect.ts":
   version: 1.0.0
-  resolution: "puppeteerconnect.ts@https://github.com/qtvhao/PuppeteerConnect.ts.git#commit=77944abd095216df8b72346a7e1ad5b3c6f27ad1"
+  resolution: "puppeteerconnect.ts@https://github.com/qtvhao/PuppeteerConnect.ts.git#commit=dac1726160f851e531f5c607d00d708aca5ac538"
   dependencies:
     puppeteer: 24.4.0
-  checksum: 4329617f78d8258effaf570fe6989ab8d1a64e845ec8df9d7bc3e05080848b2ce5b5ab2858426a588fdb14ac9db9ff98491b9c9ab593463f65fec3b05d042d00
+  checksum: d4f0054a4fc794568b5fe73901056c52749ae39288beebb6e96e09336b8473e6af3810a23f43eca3c6c6bc830674c6e57075407a5f305e05ad8aaa2df0d468df
   languageName: node
   linkType: hard
 
@@ -930,8 +930,8 @@ __metadata:
   linkType: hard
 
 "zod@npm:^3.24.1":
-  version: 3.24.2
-  resolution: "zod@npm:3.24.2"
-  checksum: c02455c09678c5055c636d64f9fcda2424fea0aa46ac7d9681e7f41990bc55f488bcd84b9d7cfef0f6e906f51f55b245239d92a9f726248aa74c5b84edf00c2d
+  version: 3.24.3
+  resolution: "zod@npm:3.24.3"
+  checksum: 9c3976e61cec25908f3405502abdf28ab1893afd5182c6739a30375c5c6bf4b9b6ea7e78735324e5ac63571c160ce607ebe320ff389b044223c357ccc2f8c94c
   languageName: node
   linkType: hard
