@@ -16,8 +16,8 @@ export class EditVideoDetails {
         await this.connect.waitForPageLogin('https://studio.youtube.com/', 'studio.youtube.com');
         const page: Page = await this.connect.getFirstPage();
         await page.goto(`https://studio.youtube.com/video/${this.vid}/edit`);
-        if (!title || !description) {
-            throw new Error('Title and Description must not be empty.');
+        if (!title) {
+            throw new Error('Title must not be empty.');
         }
         let commonSelector = 'ytcp-form-input-container[focused] #outer.ytcp-form-input-container';
         await this.typeOnFocused(page, commonSelector, 'Title (required)', title);
